@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jun  8 08:47:58 2026
-
-@author: ASUS
-"""
-
-# -*- coding: utf-8 -*-
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -25,10 +18,8 @@ plt.rcParams['axes.unicode_minus'] = False
 # ------------------- 页面配置 -------------------
 st.set_page_config(page_title="无源定位：圆定位演示", layout="wide")
 
-# 修正标题被遮挡：增加顶部padding和标题行高
 st.markdown("""
 <style>
-    /* 主容器顶部留出足够空间 */
     .main .block-container {
         padding-top: 2rem !important;
     }
@@ -37,10 +28,6 @@ st.markdown("""
         margin-top: 0.8rem !important;
         margin-bottom: 0.5rem !important;
         line-height: 1.4 !important;
-    }
-    /* 侧边栏紧凑 */
-    .css-1d391kg, .css-12oz5g7 {
-        padding-top: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -124,8 +111,8 @@ ax.text(x1, y1-1.2, "侦察站1", color='blue', fontsize=10, ha='center', weight
 ax.text(x2, y2-1.2, "侦察站2", color='blue', fontsize=10, ha='center', weight='bold')
 ax.text(x3, y3-1.2, "侦察站3", color='blue', fontsize=10, ha='center', weight='bold')
 
-# 2. 目标点（红色五角星，放大）
-ax.plot(target_x, target_y, 'r*', markersize=22, label='目标点')
+# 2. 目标点（红色五角星，放大至22）
+ax.plot(target_x, target_y, 'r*', markersize=22, label='_nolegend_')  # 实际点，不加入图例
 ax.text(target_x + 1.2, target_y + 1.5, "目标点", color='red', fontsize=11, ha='left', weight='bold')
 
 # 3. 三个测距圆（蓝色虚线）
@@ -136,20 +123,18 @@ ax.add_patch(circle1)
 ax.add_patch(circle2)
 ax.add_patch(circle3)
 
-# 4. 两个歧义点（低饱和度橙色，空心圆，边框加粗）
-low_sat_orange = '#FFB347'  # 柔和橙色
+# 4. 两个歧义点（低饱和度橙色，空心圆）
+low_sat_orange = '#FFB347'
 if len(intersections_12) == 2:
     for i, (ix, iy) in enumerate(intersections_12):
         ax.plot(ix, iy, 'o', markerfacecolor='white', markeredgecolor=low_sat_orange,
                 markersize=12, markeredgewidth=2.5)
-        # 标注文字，避免重叠：歧义点1放在左下方，歧义点2放在右下方
         if i == 0:
             ax.text(ix - 1.8, iy - 1.5, f"歧义点1", color=low_sat_orange, fontsize=10, ha='center', weight='bold')
         else:
             ax.text(ix + 1.5, iy - 1.5, f"歧义点2", color=low_sat_orange, fontsize=10, ha='center', weight='bold')
     st.sidebar.success("✅ 站1与站2有两个交点（双解歧义）")
 
-    # 判断三站唯一锁定
     unique_idx = None
     for idx, (ix, iy) in enumerate(intersections_12):
         if abs(np.hypot(ix - s3[0], iy - s3[1]) - d3) < 0.5:
@@ -158,9 +143,7 @@ if len(intersections_12) == 2:
 
     if unique_idx is not None:
         ix, iy = intersections_12[unique_idx]
-        # 在正确交点处叠加绿色实心圆（表示唯一解），稍微放大
         ax.plot(ix, iy, 'o', color='lime', markersize=10, zorder=10, markeredgecolor='darkgreen', markeredgewidth=1)
-        # 唯一解标注放在交点正上方，避免与歧义点文字重叠
         ax.text(ix, iy + 1.8, "✓ 唯一解", color='green', fontsize=11, ha='center', weight='bold')
         st.sidebar.success("🎉 三站协同：唯一锁定目标点（第三圆通过其中一个交点）")
     else:
@@ -168,17 +151,16 @@ if len(intersections_12) == 2:
 else:
     st.sidebar.warning("❌ 站1与站2的圆不相交，请调整站址或目标位置")
 
-# 图例（手动构建，匹配颜色）
+# ------------------- 图例（统一大小，目标点图例与实际点大小区分开） -------------------
 ax.plot([], [], 'b--', label='测距圆')
 ax.plot([], [], 'bo', label='侦察站')
-ax.plot([], [], 'r*', markersize=12, label='目标点')
+ax.plot([], [], 'r*', markersize=10, label='目标点')   # 图例中的星星大小适中，与实际点22不同但美观
 ax.plot([], [], 'o', markerfacecolor='white', markeredgecolor=low_sat_orange, markersize=8, label='双站交点（歧义）')
-ax.plot([], [], 'o', color='lime', label='三站唯一解')
+ax.plot([], [], 'o', color='lime', markersize=8, label='三站唯一解')
 ax.legend(loc='upper right')
 
 st.pyplot(fig, use_container_width=True)
 
-# 教学说明
 with st.expander("📖 无源定位原理（点击展开）"):
     st.markdown("""
     - **单站测距**：一个侦察站只能确定目标在以站为圆心、距离为半径的圆上，无法定位具体点。  
@@ -187,7 +169,7 @@ with st.expander("📖 无源定位原理（点击展开）"):
     - **操作提示**：拖动左侧滑块调整侦察站或目标位置，观察两个歧义点（橙色空心圆）以及第三个圆如何锁定正确交点。
     """)
 
-# 注释掉侧边栏链接（保留注释）
+# 侧边栏链接已注释
 # st.sidebar.markdown("---")
 # st.sidebar.subheader("📱 学生扫码访问")
 # app_url = "https://你的应用名.streamlit.app"
