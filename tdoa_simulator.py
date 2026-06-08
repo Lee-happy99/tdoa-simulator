@@ -2,6 +2,19 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+# ----- 从这里开始添加，解决中文方框问题 -----
+import matplotlib.font_manager as fm
+import os
+
+# 方案A（强烈推荐）：如果你复制了 msyh.ttc
+font_path = os.path.join(os.path.dirname(__file__), 'msyh.ttc')
+if os.path.exists(font_path):
+    fm.fontManager.addfont(font_path)
+    plt.rcParams['font.family'] = fm.FontProperties(fname=font_path).get_name()
+else:
+    # 如果文件不存在，打印警告（便于排查）
+    st.warning(f"字体文件 {font_path} 未找到，请检查文件名。")
+    
 from matplotlib.patches import Circle
 from matplotlib.font_manager import FontProperties
 import io
