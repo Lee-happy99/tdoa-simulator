@@ -18,23 +18,29 @@ plt.rcParams['axes.unicode_minus'] = False
 # ------------------- 页面配置 -------------------
 st.set_page_config(page_title="无源定位：圆定位演示", layout="wide")
 
-# 修正标题居中、减小与下方文字的行距
+# 优化样式：标题居中，说明文字居中，紧凑间距
 st.markdown("""
 <style>
     .main .block-container {
-        padding-top: 1.5rem !important;
+        padding-top: 1rem !important;
+        padding-bottom: 0rem !important;
     }
     h1 {
         font-size: 1.8rem !important;
         text-align: center !important;
         margin-top: 0rem !important;
         margin-bottom: 0.2rem !important;
-        line-height: 1 !important;
+        line-height: 1.2 !important;
     }
-    /* 调整标题下方说明文字的间距 */
     .stMarkdown p {
-        margin-top: 0rem;
-        margin-bottom: 0rem;
+        text-align: center !important;
+        margin-top: 0rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.2 !important;
+    }
+    /* 调整侧边栏顶部间距 */
+    .css-1d391kg, .css-12oz5g7 {
+        padding-top: 0.5rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -110,7 +116,7 @@ ax.set_ylabel("y (km)")
 ax.grid(True, alpha=0.3)
 ax.set_aspect('equal')
 
-# 侦察站
+# 侦察站（蓝色）
 ax.plot(x1, y1, 'o', color='blue', markersize=10)
 ax.plot(x2, y2, 'o', color='blue', markersize=10)
 ax.plot(x3, y3, 'o', color='blue', markersize=10)
@@ -118,11 +124,11 @@ ax.text(x1, y1-1.2, "侦察站1", color='blue', fontsize=10, ha='center', weight
 ax.text(x2, y2-1.2, "侦察站2", color='blue', fontsize=10, ha='center', weight='bold')
 ax.text(x3, y3-1.2, "侦察站3", color='blue', fontsize=10, ha='center', weight='bold')
 
-# 目标点（红色五角星，放大）
+# 目标点（红色五角星）
 ax.plot(target_x, target_y, 'r*', markersize=22, label='_nolegend_')
 ax.text(target_x + 1.2, target_y + 1.5, "目标点", color='red', fontsize=11, ha='left', weight='bold')
 
-# 测距圆
+# 测距圆（蓝色虚线）
 circle1 = Circle(s1, d1, edgecolor='blue', facecolor='none', linewidth=1.5, linestyle='--')
 circle2 = Circle(s2, d2, edgecolor='blue', facecolor='none', linewidth=1.5, linestyle='--')
 circle3 = Circle(s3, d3, edgecolor='blue', facecolor='none', linewidth=1.5, linestyle='--')
@@ -130,7 +136,7 @@ ax.add_patch(circle1)
 ax.add_patch(circle2)
 ax.add_patch(circle3)
 
-# 歧义点
+# 歧义点（低饱和度橙色，空心圆）
 low_sat_orange = '#FFB347'
 if len(intersections_12) == 2:
     for i, (ix, iy) in enumerate(intersections_12):
@@ -175,5 +181,3 @@ with st.expander("📖 无源定位原理（点击展开）"):
     - **三站协同**：第三个圆会通过其中一个交点，从而消除歧义，实现唯一锁定。  
     - **操作提示**：拖动左侧滑块调整侦察站或目标位置，观察两个歧义点（橙色空心圆）以及第三个圆如何锁定正确交点。
     """)
-
-# 侧边栏链接已注释
