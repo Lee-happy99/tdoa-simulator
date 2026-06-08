@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Mon Jun  8 08:47:58 2026
+
+@author: ASUS
+"""
+
+# -*- coding: utf-8 -*-
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +14,7 @@ import matplotlib.font_manager as fm
 import os
 
 # 方案A（强烈推荐）：如果你复制了 msyh.ttc
-font_path = os.path.join(os.path.dirname(__file__), 'msyh.ttc')
+font_path = os.path.join(os.path.dirname(__file__), 'simhei.ttf')
 if os.path.exists(font_path):
     fm.fontManager.addfont(font_path)
     plt.rcParams['font.family'] = fm.FontProperties(fname=font_path).get_name()
@@ -139,19 +146,19 @@ st.pyplot(fig)
 
 # 教学说明
 st.info("""
-**📖 观察指导（对应微课AI赋能点①）**
+**📖 说明：**
 - **单站**：一个侦察站只能画出一个圆（目标可能在圆周上任意点）。
 - **双站**：两个圆一般相交于**两个点**（双解歧义），无法唯一确定目标。
 - **三站**：引入第三个侦察站，它的圆只会通过其中一个交点，从而**消除歧义、唯一锁定**。
-> ✨ 拖动滑块改变站址或目标位置，观察圆交点的变化。尝试让三站共线，看定位误差如何放大。
+> ✨ 拖动滑块改变站址或目标位置，观察圆交点的变化。
 """)
 
 # 学生访问链接提示
-st.sidebar.markdown("---")
-st.sidebar.subheader("📱 学生访问方式")
-app_url = "https://你的应用名.streamlit.app"  # 请替换为实际部署后的链接
-st.sidebar.info(
-    f"**已部署在云端**\n\n教师复制下方链接，用在线二维码生成器（如 cli.im）制作二维码，插入课件即可。\n\n"
-    f"👉 `{app_url}`"
-)
-st.sidebar.caption("部署成功后，浏览器地址栏的 URL 就是你的应用链接。")
+# st.sidebar.markdown("---")
+# st.sidebar.subheader("📱 学生访问方式")
+# app_url = "https://你的应用名.streamlit.app"  # 请替换为实际部署后的链接
+# st.sidebar.info(
+#     f"**已部署在云端**\n\n教师复制下方链接，用在线二维码生成器（如 cli.im）制作二维码，插入课件即可。\n\n"
+#     f"👉 `{app_url}`"
+# )
+# st.sidebar.caption("部署成功后，浏览器地址栏的 URL 就是你的应用链接。")
