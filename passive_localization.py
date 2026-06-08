@@ -29,12 +29,12 @@ st.markdown("""
         text-align: center !important;
         margin-top: 0rem !important;
         margin-bottom: 0.2rem !important;
-        line-height: 1.2 !important;
+        line-height: 1 !important;
     }
     /* 调整标题下方说明文字的间距 */
     .stMarkdown p {
         margin-top: 0rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0rem;
     }
 </style>
 """, unsafe_allow_html=True)
