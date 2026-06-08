@@ -31,7 +31,7 @@ plt.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans', 'Arial Unicode MS']
 plt.rcParams['axes.unicode_minus'] = False
 
 st.set_page_config(page_title="无源定位原理演示", layout="wide")
-st.title("📡 无源定位：从单站测距到三站协同锁定")
+st.title("无源定位：从单站测距到三站协同锁定")
 st.markdown("**拖动左侧滑块，观察三个侦察站如何逐步确定目标位置**")
 
 # ------------------- 侧边栏控制 -------------------
